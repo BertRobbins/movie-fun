@@ -18,10 +18,13 @@ package org.superbiz.moviefun.albums;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.superbiz.moviefun.movies.Movie;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
@@ -39,5 +42,13 @@ public class AlbumsBean {
         CriteriaQuery<Album> cq = entityManager.getCriteriaBuilder().createQuery(Album.class);
         cq.select(cq.from(Album.class));
         return entityManager.createQuery(cq).getResultList();
+    }
+
+    public int countAll() {
+        CriteriaQuery<Long> cq = entityManager.getCriteriaBuilder().createQuery(Long.class);
+        Root<Album> rt = cq.from(Album.class);
+        cq.select(entityManager.getCriteriaBuilder().count(rt));
+        TypedQuery<Long> q = entityManager.createQuery(cq);
+        return (q.getSingleResult()).intValue();
     }
 }

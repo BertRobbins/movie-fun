@@ -43,27 +43,30 @@ public class HomeController {
 
     @GetMapping("/setup")
     public String setup(Map<String, Object> model) {
-        movieTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                for (Movie movie : movieFixtures.load()) {
-                    moviesBean.addMovie(movie);
+        if(moviesBean.countAll()==0) {
+            movieTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                    for (Movie movie : movieFixtures.load()) {
+                        moviesBean.addMovie(movie);
+                    }
+
+                    model.put("movies", moviesBean.getMovies());
+
                 }
-
-                model.put("movies", moviesBean.getMovies());
-
-            }
-        });
-
-        albumTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                for (Album album : albumFixtures.load()) {
-                    albumsBean.addAlbum(album);
+            });
+        }
+        if(albumsBean.countAll()==0) {
+            albumTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                    for (Album album : albumFixtures.load()) {
+                        albumsBean.addAlbum(album);
+                    }
+                    model.put("albums", albumsBean.getAlbums());
                 }
-                model.put("albums", albumsBean.getAlbums());
-            }
-        });
+            });
+        }
        return "setup";
     }
 }
