@@ -55,6 +55,8 @@ public class HomeController {
 
                 }
             });
+        } else {
+            model.put("movies", moviesBean.getMovies());
         }
         if(albumsBean.countAll()==0) {
             albumTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -66,6 +68,8 @@ public class HomeController {
                     model.put("albums", albumsBean.getAlbums());
                 }
             });
+        } else {
+            model.put("albums", albumsBean.getAlbums());
         }
        return "setup";
     }
