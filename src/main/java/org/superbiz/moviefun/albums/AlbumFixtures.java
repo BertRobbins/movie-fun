@@ -4,16 +4,17 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.springframework.stereotype.Component;
+import org.superbiz.moviefun.CsvHelper;
 
 import java.util.List;
 
 import static com.fasterxml.jackson.dataformat.csv.CsvSchema.ColumnType.NUMBER;
-import static org.superbiz.moviefun.CsvUtils.readFromCsv;
 
 @Component
 public class AlbumFixtures {
 
     private final ObjectReader objectReader;
+    private final CsvHelper csvHelper = new CsvHelper();
 
     public AlbumFixtures() {
         CsvSchema schema = CsvSchema.builder()
@@ -27,6 +28,6 @@ public class AlbumFixtures {
     }
 
     public List<Album> load() {
-        return readFromCsv(objectReader, "album-fixtures.csv");
+        return csvHelper.readFromCsv(objectReader, "album-fixtures.csv");
     }
 }
