@@ -1,0 +1,9 @@
+---
+applications:
+- name: moviefun
+  path: target/moviefun.war
+  routes:
+  - route: moviefun-wacky-jaguar.apps.pikes.pal.pivotal.io
+  services:
+  - photo-storage
+  - movies-mysql
