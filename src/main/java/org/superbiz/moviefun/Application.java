@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.superbiz.moviefun.blobstore.BlobStore;
 import org.superbiz.moviefun.blobstore.S3Store;
 import org.superbiz.moviefun.blobstore.ServiceCredentials;
@@ -29,6 +30,7 @@ public class Application {
         return new ServiceCredentials(vcapServices);
     }
 
+
     @Bean
     public BlobStore blobStore(
         ServiceCredentials serviceCredentials,
@@ -41,7 +43,7 @@ public class Application {
         AWSCredentials credentials = new BasicAWSCredentials(photoStorageAccessKeyId, photoStorageSecretKey);
         AmazonS3Client s3Client = new AmazonS3Client(credentials);
 
-        if (endpoint != null) {
+        if (endpoint != null && !endpoint.isEmpty()) {
             s3Client.setEndpoint(endpoint);
         }
 
